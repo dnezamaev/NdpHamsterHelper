@@ -10,7 +10,8 @@ namespace NdpHamsterHelperLib
         public double Payback { get => Price / Income; }
 
         public string FriendlyName =>
-            $"{Payback:0.##} = {Price:0.##} / {Income:0.##} - {FilePath}";
+            $"Payback: {Payback:0.##} hours = {Price:0.##} / {Income:0.##} - " +
+            $"{Path.GetFileName(FilePath)}";
     }
 
     public class CardScreenshotParser
@@ -77,28 +78,6 @@ namespace NdpHamsterHelperLib
             }
 
             return new Card(filePath, cleanNumberLines[1], cleanNumberLines[0]);
-        }
-
-        private Card ParseTextRegex(string text, string filePath)
-        {
-            // Dollar picture recognised as at symbol.
-            var regex = new Regex("^@[0-9\\s+,]+[K]?$",
-                RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-
-            var regexMatches = regex.Matches(text.ToUpper()).ToList();
-
-            var numbers = regexMatches
-                // Remove unnecessary symbols.
-                .Select(m => Regex.Replace(m.Value, "[@\\s+]", ""))
-                .Select(ParseNumber)
-                .ToList();
-
-            if (numbers.Count != 2)
-            {
-                throw new Exception("Income and/or price not found on card");
-            }
-
-            return new Card(filePath, numbers[0], numbers[1]);
         }
 
         private static double ParseNumber(string text)

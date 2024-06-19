@@ -17,7 +17,7 @@ namespace NdpHamsterHelperLib
 
         public List<Card>OrderByPayback(IEnumerable<Card> cards)
         {
-            return cards.OrderBy(c => c.Payback).ToList();
+            return cards.OrderByDescending(c => c.Payback).ToList();
         }
 
         public void BuyCard(Card card)

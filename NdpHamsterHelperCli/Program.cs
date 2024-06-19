@@ -6,7 +6,15 @@ namespace NdpHamsterHelperCli
     {
         static void Main(string[] args)
         {
-            var files = Directory.GetFiles(@"C:\Users\user\Downloads\hamster", "*", SearchOption.AllDirectories);
+            string screensDirectory = "screenshots";
+
+            if (args.Length > 0)
+            {
+                screensDirectory = args[0];
+            }
+
+            var files = Directory.GetFiles
+                (screensDirectory, "*", SearchOption.AllDirectories);
 
             var parser = new CardScreenshotParser();
             var cards = parser.ParseImages(files);
